@@ -5,8 +5,10 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secr
 export default defineEventHandler(async (event) => {
   const path = getRequestPath(event);
 
-  // Only protect dashboard routes and specific API routes
-  if (path.startsWith('/dashboard') || (path.startsWith('/api/') && !path.startsWith('/api/auth/'))) {
+  // Protect dashboard routes and sensitive API routes
+  const isAuthRoute = path.startsWith('/api/auth/login') || path.startsWith('/api/auth/register') || path.startsWith('/api/auth/me')
+  
+  if (path.startsWith('/dashboard') || (path.startsWith('/api/') && !isAuthRoute)) {
     const token = getCookie(event, 'auth_token');
 
     if (!token) {

@@ -1,6 +1,6 @@
 <template>
   <main>
     <HeroSection />
-    <FeatureGrid />
+    <PostGrid />
   </main>
 </template>
