@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
       },
     };
   } catch (error: any) {
-    if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+    if (error.code === '23505') {
       throw createError({
         statusCode: 409,
         statusMessage: 'Username or email already exists',
