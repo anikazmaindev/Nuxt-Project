@@ -12,7 +12,7 @@
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
           <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
         </span>
-        NEW VERSION 4.0 IS OUT
+        All Update Tech News
       </div>
 
       <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 animate-slide-up">
@@ -25,8 +25,8 @@
 
       <p
         class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 animate-slide-up [animation-delay:200ms] opacity-0">
-        Experience the next generation of web development with our high-performance,
-        premium-designed components and architecture.
+        Explore the latest insights, technology updates, development experiences, and industry trends through our modern
+        blog platform built for developers, creators, and tech enthusiasts.
       </p>
 
     </div>
