@@ -3,7 +3,7 @@ import { jwtVerify } from 'jose';
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secret-key-at-least-32-chars-long');
 
 export default defineEventHandler(async (event) => {
-  const path = getRequestPath(event);
+  const path = getRequestURL(event).pathname;
 
   // Protect dashboard routes and sensitive API routes
   // Public routes that don't need auth
