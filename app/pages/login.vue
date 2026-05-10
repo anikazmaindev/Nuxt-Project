@@ -18,6 +18,19 @@
             class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all">
         </div>
 
+        <div class="flex items-center justify-between">
+          <label class="flex items-center gap-2 cursor-pointer group">
+            <div class="relative flex items-center justify-center">
+              <input v-model="rememberMe" type="checkbox" class="peer sr-only" />
+              <div class="w-5 h-5 border-2 border-slate-700 rounded-md peer-checked:bg-primary-500 peer-checked:border-primary-500 transition-all"></div>
+              <svg class="absolute w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <span class="text-xs font-bold text-slate-500 group-hover:text-slate-400 transition-colors uppercase tracking-widest">Remember Me</span>
+          </label>
+        </div>
+
         <div v-if="error" class="text-red-400 text-sm text-center">
           {{ error }}
         </div>
@@ -42,6 +55,21 @@ const form = reactive({
 })
 const loading = ref(false)
 const error = ref('')
+const rememberMe = ref(false)
+
+onMounted(() => {
+  const saved = localStorage.getItem('login_credentials')
+  if (saved) {
+    try {
+      const { username, password } = JSON.parse(saved)
+      form.username = username
+      form.password = password
+      rememberMe.value = true
+    } catch (e) {
+      localStorage.removeItem('login_credentials')
+    }
+  }
+})
 
 async function handleLogin() {
   loading.value = true
@@ -51,9 +79,17 @@ async function handleLogin() {
       method: 'POST',
       body: form
     })
+    if (rememberMe.value) {
+      localStorage.setItem('login_credentials', JSON.stringify({
+        username: form.username,
+        password: form.password
+      }))
+    } else {
+      localStorage.removeItem('login_credentials')
+    }
     navigateTo('/dashboard')
   } catch (e) {
-    error.value = e.statusMessage || 'Login failed'
+    error.value = e.data?.data || e.data?.statusMessage || e.statusMessage || 'Login failed'
   } finally {
     loading.value = false
   }

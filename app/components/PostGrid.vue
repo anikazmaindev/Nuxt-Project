@@ -18,8 +18,11 @@ const { data: posts, pending, error } = await useFetch('/api/posts')
         <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
 
-      <div v-else-if="error" class="text-center py-12 text-red-500">
-        Failed to load posts. Please try again later.
+      <div v-else-if="error" class="text-center py-12 text-red-500 max-w-2xl mx-auto px-4">
+        <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-6">
+          <p class="font-bold mb-2">Failed to load posts</p>
+          <p class="text-sm opacity-80">{{ error.data?.data || error.data?.statusMessage || error.message }}</p>
+        </div>
       </div>
 
       <div v-else-if="posts?.length === 0" class="text-center py-12 text-slate-500 italic">

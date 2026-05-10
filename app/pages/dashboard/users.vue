@@ -7,7 +7,18 @@
       </div>
     </div>
 
-    <div class="bg-slate-900/40 backdrop-blur-xl rounded-2xl border border-white/5 overflow-hidden">
+    <div v-if="error" class="p-8 text-center bg-slate-900/40 backdrop-blur-xl rounded-2xl border border-white/5">
+      <div class="inline-flex items-center gap-3 px-6 py-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="text-left">
+          <p class="font-bold text-sm">Failed to load users</p>
+          <p class="text-xs opacity-80">{{ error.data?.data || error.data?.statusMessage || error.message }}</p>
+        </div>
+        <button @click="() => refresh()" class="ml-4 px-4 py-2 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-colors">Retry</button>
+      </div>
+    </div>
+
+    <div v-else class="bg-slate-900/40 backdrop-blur-xl rounded-2xl border border-white/5 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
@@ -19,7 +30,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-white/5">
-            <tr v-for="u in usersList" :key="u.id" class="hover:bg-white/[0.02] transition-colors group">
+            <tr v-for="u in (usersList || [])" :key="u.id" class="hover:bg-white/[0.02] transition-colors group">
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600/20 to-indigo-600/20 flex items-center justify-center text-blue-400 font-bold border border-blue-500/20">
@@ -43,7 +54,7 @@
                 </span>
               </td>
             </tr>
-            <tr v-if="usersList.length === 0">
+            <tr v-if="(usersList?.length || 0) === 0">
               <td colspan="4" class="px-6 py-20 text-center text-slate-500">
                 No users found.
               </td>
@@ -60,7 +71,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-const { data: usersList, refresh } = await useFetch('/api/users')
+const { data: usersList, refresh, error } = await useFetch('/api/users')
 
 const formatDate = (dateStr: string) => {
   return new Date(dateStr).toLocaleDateString('en-US', {

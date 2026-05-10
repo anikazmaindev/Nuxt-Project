@@ -72,4 +72,19 @@ yarn preview
 bun run preview
 ```
 
+## Database Management
+
+Manage your database schema and data using Drizzle ORM:
+
+```bash
+# Push schema changes to database
+npm run db:push
+
+# Open Drizzle Studio to explore data
+npm run db:studio
+
+# Seed database with initial data
+npm run db:seed
+```
+
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

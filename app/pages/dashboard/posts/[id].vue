@@ -6,7 +6,7 @@ definePageMeta({
 const route = useRoute()
 const id = route.params.id
 
-const { data: post, pending } = await useFetch(`/api/posts/${id}`)
+const { data: post, pending, error: fetchError } = await useFetch(`/api/posts/${id}`)
 
 const title = ref('')
 const description = ref('')
@@ -54,7 +54,7 @@ const updatePost = async () => {
     success.value = 'Post updated successfully!'
     setTimeout(() => navigateTo('/dashboard/posts'), 1500)
   } catch (err: any) {
-    error.value = err.data?.statusMessage || 'Failed to update post.'
+    error.value = err.data?.data || err.data?.statusMessage || 'Failed to update post.'
   } finally {
     loading.value = false
   }
@@ -82,9 +82,9 @@ const updatePost = async () => {
       </div>
 
       <div v-else class="p-8">
-        <div v-if="error" class="mb-6 p-4 text-red-400 bg-red-500/10 rounded-xl border border-red-500/20 text-sm font-medium flex items-center gap-3">
+        <div v-if="error || fetchError" class="mb-6 p-4 text-red-400 bg-red-500/10 rounded-xl border border-red-500/20 text-sm font-medium flex items-center gap-3">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          {{ error }}
+          {{ error || (fetchError?.data?.data || fetchError?.data?.statusMessage || fetchError?.message) }}
         </div>
 
         <div v-if="success" class="mb-6 p-4 text-green-400 bg-green-500/10 rounded-xl border border-green-500/20 text-sm font-medium flex items-center gap-3">

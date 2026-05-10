@@ -126,7 +126,7 @@ const updateProfile = async () => {
     await refreshUser()
   } catch (err: any) {
     profileError.value = true
-    profileMessage.value = err.data?.statusMessage || 'Failed to update profile'
+    profileMessage.value = err.data?.data || err.data?.statusMessage || 'Failed to update profile'
   } finally {
     profileLoading.value = false
   }
@@ -155,7 +155,7 @@ const updatePassword = async () => {
     passwordForm.value = { currentPassword: '', newPassword: '', confirmPassword: '' }
   } catch (err: any) {
     passwordError.value = true
-    passwordMessage.value = err.data?.statusMessage || 'Failed to change password'
+    passwordMessage.value = err.data?.data || err.data?.statusMessage || 'Failed to change password'
   } finally {
     passwordLoading.value = false
   }

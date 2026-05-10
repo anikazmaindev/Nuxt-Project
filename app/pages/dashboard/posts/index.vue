@@ -3,7 +3,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-const { data: posts, refresh } = await useFetch('/api/posts')
+const { data: posts, refresh, error } = await useFetch('/api/posts')
 
 const deletePost = async (id: number) => {
   if (!confirm('Are you sure you want to delete this post?')) return
@@ -12,7 +12,7 @@ const deletePost = async (id: number) => {
     await $fetch(`/api/posts/${id}`, { method: 'DELETE' })
     await refresh()
   } catch (err: any) {
-    alert('Failed to delete post: ' + (err.data?.statusMessage || err.message))
+    alert('Failed to delete post: ' + (err.data?.data || err.data?.statusMessage || err.message))
   }
 }
 </script>
@@ -29,7 +29,18 @@ const deletePost = async (id: number) => {
       </NuxtLink>
     </div>
 
-    <div class="overflow-x-auto">
+    <div v-if="error" class="p-8 text-center">
+      <div class="inline-flex items-center gap-3 px-6 py-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="text-left">
+          <p class="font-bold text-sm">Failed to load posts</p>
+          <p class="text-xs opacity-80">{{ error.data?.data || error.data?.statusMessage || error.message }}</p>
+        </div>
+        <button @click="() => refresh()" class="ml-4 px-4 py-2 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-colors">Retry</button>
+      </div>
+    </div>
+
+    <div v-else class="overflow-x-auto">
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-black/20 text-slate-400">

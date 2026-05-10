@@ -42,7 +42,7 @@ const createPost = async () => {
     description.value = ''
     imageBase64.value = ''
   } catch (err: any) {
-    error.value = err.data?.statusMessage || 'Failed to create post. Please try again.'
+    error.value = err.data?.data || err.data?.statusMessage || 'Failed to create post. Please try again.'
   } finally {
     loading.value = false
   }

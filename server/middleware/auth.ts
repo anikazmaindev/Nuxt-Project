@@ -6,9 +6,11 @@ export default defineEventHandler(async (event) => {
   const path = getRequestPath(event);
 
   // Protect dashboard routes and sensitive API routes
+  // Public routes that don't need auth
+  const isPublicApi = (path === '/api/posts' || path.startsWith('/api/posts/')) && event.method === 'GET'
   const isAuthRoute = path.startsWith('/api/auth/login') || path.startsWith('/api/auth/register') || path.startsWith('/api/auth/me')
   
-  if (path.startsWith('/dashboard') || (path.startsWith('/api/') && !isAuthRoute)) {
+  if (path.startsWith('/dashboard') || (path.startsWith('/api/') && !isAuthRoute && !isPublicApi)) {
     const token = getCookie(event, 'auth_token');
 
     if (!token) {
