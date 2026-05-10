@@ -19,7 +19,7 @@
         Blogs <br />
         <span
           class="bg-gradient-to-r from-primary-400 via-purple-400 to-pink-500 bg-clip-text text-transparent bg-gradient-x">
-          Tech
+          Technology
         </span>
       </h1>
 
